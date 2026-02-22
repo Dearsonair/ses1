@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masterclass Éco - Coefficient 67</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0e17;
+            --neon-green: #00ff88;
+            --neon-blue: #00e5ff;
+            --neon-pink: #ff007f;
+            --glass: rgba(255, 255, 255, 0.05);
+            --text-main: #e2e8f0;
+        }
+
+        * { box-sizing: border-box; scroll-behavior: smooth; }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Montserrat', sans-serif;
+            background-image: 
+                linear-gradient(rgba(10, 14, 23, 0.9), rgba(10, 14, 23, 0.9)),
+                url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=2070');
+            background-attachment: fixed;
+            background-size: cover;
+        }
+
+        /* --- HEADER --- */
+        header {
+            text-align: center;
+            padding: 100px 20px;
+            border-bottom: 2px solid var(--neon-green);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.2);
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            margin: 0;
+            text-transform: uppercase;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--neon-green), var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.5));
+        }
+
+        .subtitle {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.2rem;
+            color: var(--neon-pink);
+            margin-top: 15px;
+            letter-spacing: 2px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            color: white;
+            border-left: 5px solid var(--neon-blue);
+            padding-left: 15px;
+            margin-top: 60px;
+        }
+
+        /* --- CARTES VRAI/FAUX --- */
+        .grid-tf {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .card-tf {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            border-radius: 20px;
+            padding: 30px;
+            transition: 0.4s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-tf:hover {
+            transform: translateY(-10px);
+            border-color: var(--neon-blue);
+            box-shadow: 0 10px 30px rgba(0, 229, 255, 0.2);
+        }
+
+        .card-tf .question { font-size: 1.3rem; font-weight: bold; margin-bottom: 15px; }
+        .card-tf .answer { 
+            display: none; 
+            padding-top: 15px; 
+            border-top: 1px solid rgba(255,255,255,0.1); 
+            color: #a0aec0;
+        }
+        .card-tf.active .answer { display: block; animation: fadeIn 0.5s; }
+        .true { color: var(--neon-green); font-weight: 800; font-size: 1.2rem; }
+        .false { color: var(--neon-pink); font-weight: 800; font-size: 1.2rem; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* --- FORMULES (STYLE CODE) --- */
+        .formula-box {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .formula-box::before {
+            content: "CALCULATOR";
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--neon-green);
+            color: black;
+            padding: 2px 10px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+        .math {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.5rem;
+            color: var(--neon-green);
+            margin: 15px 0;
+            background: rgba(0,0,0,0.5);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .example { color: #94a3b8; font-style: italic; }
+
+        /* --- ANALYSE (BOÎTES DE TEXTE) --- */
+        .analysis-grid { display: grid; grid-template-columns: 1fr; gap: 30px; }
+        @media(min-width: 800px) { .analysis-grid { grid-template-columns: 1fr 1fr; } }
+
+        .analysis-card {
+            background: linear-gradient(145deg, rgba(255,0,127,0.1), transparent);
+            border-left: 4px solid var(--neon-pink);
+            padding: 30px;
+            border-radius: 10px;
+        }
+
+        /* --- QUIZ INTERACTIF --- */
+        #quiz-section {
+            background: var(--glass);
+            padding: 40px;
+            border-radius: 20px;
+            border: 2px dashed var(--neon-green);
+            margin-top: 80px;
+        }
+
+        .q-block { margin-bottom: 30px; }
+        .q-title { font-size: 1.2rem; font-weight: bold; margin-bottom: 15px; }
+        .options button {
+            background: #1e293b;
+            color: white;
+            border: 1px solid #475569;
+            padding: 12px 20px;
+            margin: 5px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            transition: 0.3s;
+        }
+        .options button:hover { background: #334155; border-color: var(--neon-blue); }
+        .options button.selected { background: var(--neon-blue); color: black; font-weight: bold; }
+        
+        #submit-btn {
+            background: var(--neon-green);
+            color: black;
+            font-weight: 800;
+            font-size: 1.2rem;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            display: block;
+            margin: 40px auto 0;
+            box-shadow: 0 0 20px rgba(0,255,136,0.4);
+            transition: 0.3s;
+        }
+        #submit-btn:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(0,255,136,0.8); }
+
+        #result {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 800;
+            margin-top: 30px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>ÉCONOMIE 101</h1>
+    <div class="subtitle">MISSION : DÉTRUIRE LE CONTRÔLE (COEFF 67)</div>
+</header>
+
+<div class="container">
+
+    <h2>1. Les Pièges (Clique pour révéler)</h2>
+    <div class="grid-tf">
+        <div class="card-tf" onclick="this.classList.toggle('active')">
+            <div class="question">🖊️ Un stylo, c'est un service. Vrai ou Faux ?</div>
+            <div class="answer">
+                <span class="false">FAUX.</span> Un stylo est un <strong>bien matériel</strong>. <br><br>
+                <em>Définition :</em> Un bien est palpable, on peut le stocker (ex: un stylo, une pomme). Un service est immatériel et consommé en même temps qu'il est produit (ex: une coupe de cheveux, un cours).
+            </div>
+        </div>
+
+        <div class="card-tf" onclick="this.classList.toggle('active')">
+            <div class="question">👟 Nike est une administration publique. Vrai ou Faux ?</div>
+            <div class="answer">
+                <span class="false">FAUX.</span> Nike est une <strong>entreprise privée à but lucratif</strong>.<br><br>
+                <em>Définition :</em> Une administration publique (ex: l'État, un lycée public, la mairie) produit des services non marchands (gratuits ou quasi-gratuits) et est financée par les impôts. Nike cherche à faire du profit (but lucratif) en vendant sur un marché.
+            </div>
+        </div>
+
+        <div class="card-tf" onclick="this.classList.toggle('active')">
+            <div class="question">🌾 La farine est une consommation intermédiaire. Vrai ou Faux ?</div>
+            <div class="answer">
+                <span class="true">VRAI (en général).</span> Si la farine est achetée par un boulanger pour faire du pain, c'est une <strong>Consommation Intermédiaire (CI)</strong>.<br><br>
+                <em>Définition :</em> Une CI est un bien ou service qui est <strong>détruit ou transformé</strong> pendant le processus de production. (Attention : si tu achètes de la farine pour faire des crêpes chez toi, c'est une consommation finale, pas intermédiaire !).
+            </div>
+        </div>
+    </div>
+
+    <h2>2. Les Formules à connaître par cœur</h2>
+    
+    <div class="formula-box">
+        <h3>💰 Le Chiffre d'Affaires (CA)</h3>
+        <p>C'est le total des ventes (les "recettes" de l'entreprise).</p>
+        <div class="math">CA = Prix de vente unitaire × Quantités vendues</div>
+        <div class="example">Exemple : Je vends 100 paires de chaussures à 50€ l'unité. <br>CA = 100 × 50 = 5000€.</div>
+    </div>
+
+    <div class="formula-box">
+        <h3>🔥 La Valeur Ajoutée (VA)</h3>
+        <p>C'est la véritable richesse <strong>nouvelle</strong> créée par l'entreprise (on enlève ce qu'elle a dû acheter à d'autres pour produire).</p>
+        <div class="math">VA = Chiffre d'Affaires (CA) - Consommations Intermédiaires (CI)</div>
+        <div class="example">Exemple : Le boulanger vend pour 1000€ de pain (CA). Il a acheté pour 300€ de farine, levure, électricité (CI). <br>VA = 1000 - 300 = 700€.</div>
+    </div>
+
+    <div class="formula-box">
+        <h3>📈 Le Bénéfice (ou Profit)</h3>
+        <p>C'est ce qui reste dans la poche des propriétaires <strong>une fois que TOUT a été payé</strong> (y compris les salaires, les impôts, les machines).</p>
+        <div class="math">Bénéfice = Recettes Totales (CA) - Coûts Totaux</div>
+        <div class="example">Attention : Le CA n'est pas le bénéfice ! Si mon CA est de 5000€ mais que mes coûts (salaires, loyer, CI) sont de 4000€, mon bénéfice n'est que de 1000€.</div>
+    </div>
+
+    <div class="formula-box" style="border-color: var(--neon-pink);">
+        <h3 style="color: var(--neon-pink);">🚀 Le Taux de Croissance (Évolution)</h3>
+        <p>Permet de savoir de combien un chiffre a augmenté ou baissé en pourcentage (très utilisé avec le PIB).</p>
+        <div class="math">Taux = [(Valeur d'Arrivée - Valeur de Départ) / Valeur de Départ] × 100</div>
+        <div class="example">Exemple : Le PIB était de 100 en 2022. Il est de 105 en 2023. <br>Taux de croissance = [(105 - 100) / 100] × 100 = 5%. Le PIB a augmenté de 5%.</div>
+    </div>
+
+    <h2>3. L'Analyse (Pour les points bonus)</h2>
+    <div class="analysis-grid">
+        <div class="analysis-card">
+            <h3 style="color: var(--neon-pink);">Pourquoi préfère-t-on la Valeur Ajoutée (VA) au Chiffre d'Affaires (CA) ?</h3>
+            <p>Parce que le Chiffre d'Affaires <strong>compte plusieurs fois la même chose</strong> !</p>
+            <p>Si on additionne le CA du paysan (qui vend le blé), du meunier (qui vend la farine) et du boulanger (qui vend le pain), on va compter la valeur du blé 3 fois !</p>
+            <p>La VA est plus précise : elle déduit les consommations intermédiaires. En additionnant la VA de toutes les entreprises, on obtient la vraie richesse du pays (Le PIB !).</p>
+        </div>
+
+        <div class="analysis-card">
+            <h3 style="color: var(--neon-pink);">Pourquoi le PIB n'est-il pas un bon indicateur de "richesse/bonheur" ?</h3>
+            <p>Le PIB a d'énormes limites :</p>
+            <ul>
+                <li><strong>Il oublie des choses :</strong> Le travail bénévole, le travail domestique (faire le ménage chez soi) et l'économie souterraine (travail au noir) ne sont pas comptés.</li>
+                <li><strong>Il aime les catastrophes :</strong> Un accident de voiture fait augmenter le PIB (frais de garagiste, hôpital...). Nettoyer une marée noire fait augmenter le PIB. Ce sont des <em>externalités négatives</em>.</li>
+                <li><strong>Il ignore les inégalités :</strong> Un PIB élevé ne dit pas si la richesse est concentrée dans les mains de 3 milliardaires ou bien répartie dans la population.</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 id="quiz">4. Le Quiz de l'Ultime Jugement</h2>
+    <div id="quiz-section">
+        
+        <div class="q-block" data-answer="1">
+            <div class="q-title">1. Une entreprise fabrique des vélos. Les pneus qu'elle achète pour les monter sur les vélos sont :</div>
+            <div class="options">
+                <button onclick="selectOption(this, 0)">Des biens d'équipement</button>
+                <button onclick="selectOption(this, 1)">Des consommations intermédiaires</button>
+                <button onclick="selectOption(this, 2)">Des services marchands</button>
+            </div>
+        </div>
+
+        <div class="q-block" data-answer="0">
+            <div class="q-title">2. L'éducation nationale (lycée public) réalise une production :</div>
+            <div class="options">
+                <button onclick="selectOption(this, 0)">Non marchande</button>
+                <button onclick="selectOption(this, 1)">Marchande</button>
+                <button onclick="selectOption(this, 2)">Destructrice de valeur</button>
+            </div>
+        </div>
+
+        <div class="q-block" data-answer="2">
+            <div class="q-title">3. Le calcul correct de la Valeur Ajoutée (VA) est :</div>
+            <div class="options">
+                <button onclick="selectOption(this, 0)">CA - Salaires</button>
+                <button onclick="selectOption(this, 1)">Bénéfice - Impôts</button>
+                <button onclick="selectOption(this, 2)">CA - Consommations Intermédiaires</button>
+            </div>
+        </div>
+
+        <div class="q-block" data-answer="1">
+            <div class="q-title">4. Le PIB de mon pays passe de 2000 milliards à 2100 milliards. Mon taux de croissance est de :</div>
+            <div class="options">
+                <button onclick="selectOption(this, 0)">100%</button>
+                <button onclick="selectOption(this, 1)">5%</button>
+                <button onclick="selectOption(this, 2)">0.05%</button>
+            </div>
+        </div>
+
+        <div class="q-block" data-answer="2">
+            <div class="q-title">5. Laquelle de ces activités fait augmenter le PIB (ce qui est vu comme un défaut du PIB) ?</div>
+            <div class="options">
+                <button onclick="selectOption(this, 0)">Le bénévolat aux Restos du Cœur</button>
+                <button onclick="selectOption(this, 1)">Garder sa petite sœur gratuitement</button>
+                <button onclick="selectOption(this, 2)">Payer pour réparer une fenêtre brisée lors d'une émeute</button>
+            </div>
+        </div>
+
+        <button id="submit-btn" onclick="calculateScore()">RÉVÉLER MON SCORE</button>
+        <div id="result"></div>
+    </div>
+
+</div>
+
+<script>
+    // Script pour le Quiz Interactif
+    let userAnswers = {};
+
+    function selectOption(btn, answerIndex) {
+        // Retirer la classe 'selected' des autres boutons de la même question
+        let siblings = btn.parentElement.children;
+        for(let i=0; i<siblings.length; i++) {
+            siblings[i].classList.remove('selected');
+        }
+        // Ajouter la classe 'selected' au bouton cliqué
+        btn.classList.add('selected');
+        
+        // Enregistrer la réponse
+        let questionBlock = btn.parentElement.parentElement;
+        userAnswers[questionBlock] = answerIndex;
+    }
+
+    function calculateScore() {
+        let blocks = document.querySelectorAll('.q-block');
+        let score = 0;
+        let total = blocks.length;
+
+        if(Object.keys(userAnswers).length < total) {
+            alert("⚠️ Eh ! Réponds à toutes les questions avant de valider !");
+            return;
+        }
+
+        blocks.forEach(block => {
+            let correctAnswer = parseInt(block.getAttribute('data-answer'));
+            if(userAnswers[block] === correctAnswer) {
+                score++;
+                block.style.borderLeft = "5px solid #00ff88"; // Vert
+            } else {
+                block.style.borderLeft = "5px solid #ff007f"; // Rouge
+            }
+        });
+
+        let resultDiv = document.getElementById('result');
+        resultDiv.style.display = 'block';
+        
+        if(score === total) {
+            resultDiv.innerHTML = `<span style="color:var(--neon-green)">${score}/${total} ! PARFAIT. T'es prêt pour ce coef 67 ! 🚀</span>`;
+        } else if (score >= 3) {
+            resultDiv.innerHTML = `<span style="color:var(--neon-blue)">${score}/${total}. Pas mal, revois tes erreurs et tu vas tout casser ! 💪</span>`;
+        } else {
+            resultDiv.innerHTML = `<span style="color:var(--neon-pink)">${score}/${total}. Aïe. Relis bien les définitions plus haut, tu as encore le temps ! 📖</span>`;
+        }
+    }
+</script>
+
+</body>
+</html>
