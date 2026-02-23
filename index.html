@@ -310,146 +310,9 @@
 
 </div>
 
-<script>
-    let useAnswers = {};
-    function selectOption(btn, answerIndex) {
-        let siblings = btn.parentElement.children;
-        for(let i=0; i<siblings.length; i++) siblings[i].classList.remove('selected');
-        btn.classList.add('selected');
-        userAnswers[btn.parentElement.parentElement] = answerIndex;
-    }
-    function calculateScore() {
-        let blocks = document.querySelectorAll('.q-block');
-        let score = 0;
-        if(Object.keys(userAnswers).length < blocks.length) { alert("⚠️ Réponds à tout !"); return; }
-        blocks.forEach(block => {
-            if(userAnswers[block] === parseInt(block.getAttribute('data-answer'))) {
-                score++; block.style.borderLeft = "5px solid #00ff88";
-            } else { block.style.borderLeft = "5px solid #ff007f"; }
-        });
-        let resultDiv = document.getElementById('result');
-        resultDiv.style.display = 'block';
-        if(score === blocks.length) resultDiv.innerHTML = `<span style="color:var(--neon-green)">${score}/${blocks.length} ! T'es le Loup de Wall Street 🐺📈</span>`;
-        else resultDiv.innerHTML = `<span style="color:var(--neon-pink)">${score}/${blocks.length}. Relis bien la section VA vs Bénéfice ! 📖</span>`;
-    }
-</script>
+
 
 </body>
-</html>
-            
-        <div class="card-tf" onclick="this.classList.toggle('active')">
-            <div class="question">🌾 La farine est une consommation intermédiaire. Vrai ou Faux ?</div>
-            <div class="answer">
-                <span class="true">VRAI (en général).</span> Si la farine est achetée par un boulanger pour faire du pain, c'est une <strong>Consommation Intermédiaire (CI)</strong>.<br><br>
-                <em>Définition :</em> Une CI est un bien ou service qui est <strong>détruit ou transformé</strong> pendant le processus de production. (Attention : si tu achètes de la farine pour faire des crêpes chez toi, c'est une consommation finale, pas intermédiaire !).
-            </div>
-        </div>
-    </div>
-
-    <h2>2. Les Formules à connaître par cœur</h2>
-    
-    <div class="formula-box">
-        <h3>💰 Le Chiffre d'Affaires (CA)</h3>
-        <p>C'est le total des ventes (les "recettes" de l'entreprise).</p>
-        <div class="math">CA = Prix de vente unitaire × Quantités vendues</div>
-        <div class="example">Exemple : Je vends 100 paires de chaussures à 50€ l'unité. <br>CA = 100 × 50 = 5000€.</div>
-    </div>
-
-    <div class="formula-box">
-        <h3>🔥 La Valeur Ajoutée (VA)</h3>
-        <p>C'est la véritable richesse <strong>nouvelle</strong> créée par l'entreprise (on enlève ce qu'elle a dû acheter à d'autres pour produire).</p>
-        <div class="math">VA = Chiffre d'Affaires (CA) - Consommations Intermédiaires (CI)</div>
-        <div class="example">Exemple : Le boulanger vend pour 1000€ de pain (CA). Il a acheté pour 300€ de farine, levure, électricité (CI). <br>VA = 1000 - 300 = 700€.</div>
-    </div>
-
-    <div class="formula-box">
-        <h3>📈 Le Bénéfice (ou Profit)</h3>
-        <p>C'est ce qui reste dans la poche des propriétaires <strong>une fois que TOUT a été payé</strong> (y compris les salaires, les impôts, les machines).</p>
-        <div class="math">Bénéfice = Recettes Totales (CA) - Coûts Totaux</div>
-        <div class="example">Attention : Le CA n'est pas le bénéfice ! Si mon CA est de 5000€ mais que mes coûts (salaires, loyer, CI) sont de 4000€, mon bénéfice n'est que de 1000€.</div>
-    </div>
-
-    <div class="formula-box" style="border-color: var(--neon-pink);">
-        <h3 style="color: var(--neon-pink);">🚀 Le Taux de Croissance (Évolution)</h3>
-        <p>Permet de savoir de combien un chiffre a augmenté ou baissé en pourcentage (très utilisé avec le PIB).</p>
-        <div class="math">Taux = [(Valeur d'Arrivée - Valeur de Départ) / Valeur de Départ] × 100</div>
-        <div class="example">Exemple : Le PIB était de 100 en 2022. Il est de 105 en 2023. <br>Taux de croissance = [(105 - 100) / 100] × 100 = 5%. Le PIB a augmenté de 5%.</div>
-    </div>
-
-    <h2>3. L'Analyse (Pour les points bonus)</h2>
-    <div class="analysis-grid">
-        <div class="analysis-card">
-            <h3 style="color: var(--neon-pink);">Pourquoi préfère-t-on la Valeur Ajoutée (VA) au Chiffre d'Affaires (CA) ?</h3>
-            <p>Parce que le Chiffre d'Affaires <strong>compte plusieurs fois la même chose</strong> !</p>
-            <p>Si on additionne le CA du paysan (qui vend le blé), du meunier (qui vend la farine) et du boulanger (qui vend le pain), on va compter la valeur du blé 3 fois !</p>
-            <p>La VA est plus précise : elle déduit les consommations intermédiaires. En additionnant la VA de toutes les entreprises, on obtient la vraie richesse du pays (Le PIB !).</p>
-        </div>
-
-        <div class="analysis-card">
-            <h3 style="color: var(--neon-pink);">Pourquoi le PIB n'est-il pas un bon indicateur de "richesse/bonheur" ?</h3>
-            <p>Le PIB a d'énormes limites :</p>
-            <ul>
-                <li><strong>Il oublie des choses :</strong> Le travail bénévole, le travail domestique (faire le ménage chez soi) et l'économie souterraine (travail au noir) ne sont pas comptés.</li>
-                <li><strong>Il aime les catastrophes :</strong> Un accident de voiture fait augmenter le PIB (frais de garagiste, hôpital...). Nettoyer une marée noire fait augmenter le PIB. Ce sont des <em>externalités négatives</em>.</li>
-                <li><strong>Il ignore les inégalités :</strong> Un PIB élevé ne dit pas si la richesse est concentrée dans les mains de 3 milliardaires ou bien répartie dans la population.</li>
-            </ul>
-        </div>
-    </div>
-
-    <h2 id="quiz">4. Le Quiz de l'Ultime Jugement</h2>
-    <div id="quiz-section">
-        
-        <div class="q-block" data-answer="1">
-            <div class="q-title">1. Une entreprise fabrique des vélos. Les pneus qu'elle achète pour les monter sur les vélos sont :</div>
-            <div class="options">
-                <button onclick="selectOption(this, 0)">Des biens d'équipement</button>
-                <button onclick="selectOption(this, 1)">Des consommations intermédiaires</button>
-                <button onclick="selectOption(this, 2)">Des services marchands</button>
-            </div>
-        </div>
-
-        <div class="q-block" data-answer="0">
-            <div class="q-title">2. L'éducation nationale (lycée public) réalise une production :</div>
-            <div class="options">
-                <button onclick="selectOption(this, 0)">Non marchande</button>
-                <button onclick="selectOption(this, 1)">Marchande</button>
-                <button onclick="selectOption(this, 2)">Destructrice de valeur</button>
-            </div>
-        </div>
-
-        <div class="q-block" data-answer="2">
-            <div class="q-title">3. Le calcul correct de la Valeur Ajoutée (VA) est :</div>
-            <div class="options">
-                <button onclick="selectOption(this, 0)">CA - Salaires</button>
-                <button onclick="selectOption(this, 1)">Bénéfice - Impôts</button>
-                <button onclick="selectOption(this, 2)">CA - Consommations Intermédiaires</button>
-            </div>
-        </div>
-
-        <div class="q-block" data-answer="1">
-            <div class="q-title">4. Le PIB de mon pays passe de 2000 milliards à 2100 milliards. Mon taux de croissance est de :</div>
-            <div class="options">
-                <button onclick="selectOption(this, 0)">100%</button>
-                <button onclick="selectOption(this, 1)">5%</button>
-                <button onclick="selectOption(this, 2)">0.05%</button>
-            </div>
-        </div>
-
-        <div class="q-block" data-answer="2">
-            <div class="q-title">5. Laquelle de ces activités fait augmenter le PIB (ce qui est vu comme un défaut du PIB) ?</div>
-            <div class="options">
-                <button onclick="selectOption(this, 0)">Le bénévolat aux Restos du Cœur</button>
-                <button onclick="selectOption(this, 1)">Garder sa petite sœur gratuitement</button>
-                <button onclick="selectOption(this, 2)">Payer pour réparer une fenêtre brisée lors d'une émeute</button>
-            </div>
-        </div>
-
-        <button id="submit-btn" onclick="calculateScore()">RÉVÉLER MON SCORE</button>
-        <div id="result"></div>
-    </div>
-
-</div>
-
 <script>
     // Script pour le Quiz Interactif
     let userAnswers = {};
@@ -500,6 +363,5 @@
         }
     }
 </script>
-
-</body>
-</html>
+        
+        </html>
